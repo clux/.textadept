@@ -15,7 +15,7 @@ Relies on the following modules:
 The CoffeeScript module has been modified to fit with later versions of textadept. In particular:
 
 - extra keyboard shortcut taken out to insert snippets of js
-- tweaked run command and added compile shortcuts
+- tweaked run command and added compile shortcuts (line numbers of compiled correspond to node stacktraces)
 
 
 ### Cool features
