@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>coffeescript/init.lua</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="locco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="docs">
+            <h1>
+              coffeescript/init.lua
+            </h1>
+          </th>
+          <th class="code">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+<tr id="section-1">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-1">&#182;</a>
+  </div>
+  
+<p><img src="logo.png" alt="CoffeeScript"/></p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>
+</pre></div>
+</td>
+</tr><tr id="section-2">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-2">&#182;</a>
+  </div>
+  
+<p>A <code>coffeescript</code> module for the
+<a href="http://code.google.com/p/textadept/">Textadept</a> editor.
+It provides utilities for editing
+<a href="http://jashkenas.github.com/coffee-script/">CoffeeScript</a> code.<br>
+It contains additional key commands, indentation support and
+snippets, the latter based on Jeremy Ashkenas'
+<a href="https://github.com/jashkenas/coffee-script-tmbundle">Textmate bundle</a>.</p>
+
+<p>The source is on
+<a href="https://github.com/rgieseke/ta-coffeescript">GitHub</a>,
+released under the
+<a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>.</p>
+
+<h2>Installation</h2>
+<p>Download a
+<a href="https://github.com/rgieseke/ta-coffeescript/zipball/master">zipped</a>
+version and save the contained directory as <code>.textadept/modules/coffeescript</code>
+or clone the git repository:</p>
+<pre><code>cd ~/.textadept/modules
+git clone \
+  https://github.com/rgieseke/ta-coffeescript.git coffeescript
+</code></pre>
+
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>
+<span class="nt">module</span>(<span class="s">'_m.coffeescript'</span>, package.seeall)
+</pre></div>
+</td>
+</tr><tr id="section-3">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-3">&#182;</a>
+  </div>
+  
+<h2>Settings</h2>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>
+</pre></div>
+</td>
+</tr><tr id="section-4">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-4">&#182;</a>
+  </div>
+  
+<p>Local variables.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre><span class="k">local</span> m_editing, m_run = _m.textadept.editing, _m.textadept.run
+</pre></div>
+</td>
+</tr><tr id="section-5">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-5">&#182;</a>
+  </div>
+  
+<p>Comment string (uses lexer name).</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>m_editing.comment_string.coffeescript = <span class="s">'# '</span>
+</pre></div>
+</td>
+</tr><tr id="section-6">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-6">&#182;</a>
+  </div>
+  
+<p>Run command (uses file extension).</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>m_run.run_command.coffee = <span class="s">'coffee -p &#37;(filename)'</span>
+</pre></div>
+</td>
+</tr><tr id="section-7">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-7">&#182;</a>
+  </div>
+  
+<p>Check the syntax after saving a file using the <code>--lint</code> option of the
+Coffeescript executable. This requires the jsl
+(<a href="http://www.javascriptlint.com/">JavaScript Lint</a>) command
+to be installed.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>CHECK_SYNTAX = <span class="k">true</span>
+</pre></div>
+</td>
+</tr><tr id="section-8">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-8">&#182;</a>
+  </div>
+  
+<p>Sets default buffer properties for CoffeeScript files. A default indent of
+4 spaces is used.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre><span class="k">function</span> <span class="nf">set_buffer_properties</span>()
+  buffer.indent = 4
+<span class="k">end</span>
+</pre></div>
+</td>
+</tr><tr id="section-9">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-9">&#182;</a>
+  </div>
+  
+<h2>Commands.</h2>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>
+</pre></div>
+</td>
+</tr><tr id="section-10">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-10">&#182;</a>
+  </div>
+  
+<p>Check syntax after file saving.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>events.connect(events.FILE_AFTER_SAVE,
+  <span class="k">function</span>() <span class="c">-- show syntax errors as annotations
+</span>    <span class="k">if</span> CHECK_SYNTAX <span class="o">and</span> buffer:get_lexer() == <span class="s">'coffeescript'</span> <span class="k">then</span>
+      <span class="k">local</span> buffer = buffer
+      buffer:annotation_clear_all()
+      <span class="k">local</span> filename = buffer.filename:iconv(_CHARSET, <span class="s">'UTF-8'</span>)
+      <span class="k">local</span> command = <span class="s">'coffee -l '</span>..filename
+      <span class="k">local</span> p = io.popen(command..<span class="s">' 2&gt;&1'</span>)
+      <span class="k">local</span> out = p:read(<span class="s">'*line'</span>)
+      p:close()
+      <span class="k">local</span> err_msg = out:match(<span class="s">"Error.-, (.+)"</span>)
+      <span class="k">if</span> err_msg <span class="k">then</span>
+        <span class="k">local</span> line = err_msg:match(<span class="s">'on line (&#37;d+)'</span>)
+</pre></div>
+</td>
+</tr><tr id="section-11">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-11">&#182;</a>
+  </div>
+  
+<p>Make sure the first char of the error message is upper case.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>        err_msg = (err_msg:sub(1, 1)):upper()..err_msg:sub(2)
+        <span class="k">if</span> line <span class="k">then</span>
+          line = line - 1 <span class="c">-- Scintilla line numbers start from 0.
+</span>          buffer.annotation_visible = 2
+</pre></div>
+</td>
+</tr><tr id="section-12">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-12">&#182;</a>
+  </div>
+  
+<p>If error is off screen, show annotation on the current line.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>          <span class="k">if</span> (line < buffer.first_visible_line) <span class="o">or</span>
+             (line > buffer.first_visible_line + buffer.lines_on_screen) <span class="k">then</span>
+            line = buffer.line_from_position(buffer.current_pos)
+          <span class="k">end</span>
+          buffer.annotation_style[line] = 8 <span class="c">-- error style number
+</span>          buffer:annotation_set_text(line, err_msg)
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>)
+</pre></div>
+</td>
+</tr><tr id="section-13">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-13">&#182;</a>
+  </div>
+  
+<p>Control structures after which indentation should be increased. Loops can
+be used as an expression, so the pattern need to start with a variable
+name, see
+<a href="http://jashkenas.github.com/coffee-script/#loops">Loops and Comprehensions</a>.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre><span class="k">local</span> control_structure_patterns = {
+  <span class="s">'^&#37;s*class'</span>,
+  <span class="s">'^&#37;s*&#37;w*&#37;s?=?&#37;s?for'</span>,
+  <span class="s">'^&#37;s*if'</span>,
+  <span class="s">'^&#37;s*else'</span>,
+  <span class="s">'^&#37;s*switch'</span>,
+  <span class="s">'^&#37;s*when'</span>,
+  <span class="s">'^&#37;s*&#37;w*&#37;s?=?&#37;s?while'</span>,
+  <span class="s">'^&#37;s*until'</span>,
+  <span class="s">'^&#37;s*loop'</span>,
+  <span class="s">'^&#37;s*try'</span>,
+  <span class="s">'^&#37;s*catch'</span>,
+  <span class="s">'^&#37;s*finally'</span>,
+  <span class="s">'[&#37;-=]&gt;[\r\n]$'</span>,
+  <span class="s">'[=:][\r\n]$'</span>
+}
+</pre></div>
+</td>
+</tr><tr id="section-14">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-14">&#182;</a>
+  </div>
+  
+<p>Increase indentation level after new line if line contains <code>class</code>,
+<code>for</code>, etc., but only if at the end of a line.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre><span class="k">local</span> <span class="k">function</span> <span class="nf">indent</span>()
+  <span class="k">local</span> buffer = buffer
+  <span class="k">if</span> buffer:auto_c_active() <span class="k">then</span> <span class="k">return</span> <span class="k">false</span> <span class="k">end</span>
+  <span class="k">local</span> current_pos = buffer.current_pos
+  <span class="k">local</span> line_num = buffer:line_from_position(current_pos)
+  <span class="k">local</span> col = buffer.column[current_pos]
+  <span class="k">if</span> col == 0 <span class="o">or</span> buffer.current_pos ~= buffer.line_end_position[line_num] <span class="k">then</span>
+    <span class="k">return</span> <span class="k">false</span>
+  <span class="k">end</span>
+  <span class="k">local</span> line = buffer:get_line(line_num)
+  <span class="k">local</span> line_indentation = buffer.line_indentation
+  <span class="k">for</span> _, patt <span class="k">in</span> <span class="nt">ipairs</span>(control_structure_patterns) <span class="k">do</span>
+    <span class="k">if</span> line:find(patt) <span class="k">then</span>
+      <span class="k">local</span> indent = line_indentation[line_num]
+      buffer:begin_undo_action()
+      buffer:new_line()
+      line_indentation[line_num + 1] = indent + buffer.indent
+      buffer:line_end()
+      buffer:end_undo_action()
+      <span class="k">return</span> <span class="k">true</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="k">return</span> <span class="k">false</span>
+<span class="k">end</span>
+</pre></div>
+</td>
+</tr><tr id="section-15">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-15">&#182;</a>
+  </div>
+  
+<p>Insert clipboard content enclosed in backticks for raw JavaScript.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre><span class="k">function</span> <span class="nf">insert_raw_js</span>(args)
+  <span class="k">local</span> buffer = buffer
+  buffer:begin_undo_action()
+  buffer:add_text(<span class="s">'``'</span>)
+  buffer:char_left()
+  buffer:paste()
+  buffer:char_right()
+  buffer:end_undo_action()
+<span class="k">end</span>
+</pre></div>
+</td>
+</tr><tr id="section-16">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-16">&#182;</a>
+  </div>
+  
+<p>Insert <a href="http://jashkenas.github.com/coffee-script/#strings">heredoc</a>.<br>
+Parameter:<br>
+<em>char</em>: <code>"</code>, <code>'</code> or <code>#</code></p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre><span class="k">function</span> <span class="nf">insert_heredoc</span>(char)
+  <span class="k">local</span> buffer = buffer
+  buffer:begin_undo_action()
+  <span class="k">local</span> current_pos = buffer.current_pos
+  <span class="k">local</span> indentation = buffer.column[current_pos]
+  <span class="k">local</span> space = string.rep(<span class="s">" "</span>, indentation)
+  buffer:add_text(char:rep(3)..<span class="s">"\n"</span>..space..<span class="s">"\n"</span>..space..char:rep(3))
+  buffer:line_up()
+  buffer:end_undo_action()
+<span class="k">end</span>
+</pre></div>
+</td>
+</tr><tr id="section-17">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-17">&#182;</a>
+  </div>
+  
+<h2>Key Commands</h2>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>
+</pre></div>
+</td>
+</tr><tr id="section-18">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-18">&#182;</a>
+  </div>
+  
+<p>CoffeeScript-specific key commands.<br>
+On the Mac the <code>Command</code> key is used instead of <code>Alt</code>.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>__G.keys.coffeescript = {
+</pre></div>
+</td>
+</tr><tr id="section-19">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-19">&#182;</a>
+  </div>
+  
+<p>Open this module for editing:<br>
+ Language module prefix (usually <code>Alt/⌘</code>+<code>L</code>), <code>M</code></p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  [keys.LANGUAGE_MODULE_PREFIX] = {
+    m = { io.open_file,
+          (_USERHOME..<span class="s">'/modules/coffeescript/init.lua'</span>):iconv(<span class="s">'UTF-8'</span>, __CHARSET) },
+    },
+</pre></div>
+</td>
+</tr><tr id="section-20">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-20">&#182;</a>
+  </div>
+  
+<p>Insert clipboard contents enclosed in backticks for raw
+JavaScript: <code>Ctrl</code>+<code>J</code></p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  cj =  insert_raw_js,
+  [<span class="s">'\n'</span>] = indent,
+</pre></div>
+</td>
+</tr><tr id="section-21">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-21">&#182;</a>
+  </div>
+  
+<p>Insert heredoc: <code>Ctrl</code>+<code>Alt/⌘</code>+<code>"</code></p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  [<span class="o">not</span> OSX <span class="o">and</span> <span class="s">'ca"'</span> <span class="o">or</span> <span class="s">'cm"'</span>] = { insert_heredoc, <span class="s">'"'</span> },
+</pre></div>
+</td>
+</tr><tr id="section-22">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-22">&#182;</a>
+  </div>
+  
+<p>Insert heredoc: <code>Ctrl</code>+<code>Alt/⌘</code>+<code>'</code></p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  [<span class="o">not</span> OSX <span class="o">and</span> <span class="s">"ca'"</span> <span class="o">or</span> <span class="s">"cm'"</span>] = { insert_heredoc, <span class="s">"'"</span> },
+</pre></div>
+</td>
+</tr><tr id="section-23">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-23">&#182;</a>
+  </div>
+  
+<p>Insert block comment: <code>Ctrl</code>+<code>#</code></p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  [<span class="s">'c#'</span>] = { insert_heredoc, <span class="s">'#'</span> },
+}
+</pre></div>
+</td>
+</tr><tr id="section-24">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-24">&#182;</a>
+  </div>
+  
+<h2>Snippets.</h2>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>
+</pre></div>
+</td>
+</tr><tr id="section-25">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-25">&#182;</a>
+  </div>
+  
+<p>Container for Coffeescript-specific snippets.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre><span class="k">if</span> <span class="nt">type</span>(_G.snippets) == <span class="s">'table'</span> <span class="k">then</span>
+  _G.snippets.coffeescript = {
+</pre></div>
+</td>
+</tr><tr id="section-26">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-26">&#182;</a>
+  </div>
+  
+<p>Bound function.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>    bfun = <span class="s">"&#37;1((&#37;2(args)) )=&gt;\n\t&#37;0"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-27">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-27">&#182;</a>
+  </div>
+  
+<p>Class.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>    cla = <span class="s">[[
+class &#37;1(ClassName)&#37;2( extends &#37;3(Ancestor))
+	&#37;4(constructor: (&#37;5(args)) -&gt;
+		&#37;6(# body...))
+	&#37;0]]</span>,
+</pre></div>
+</td>
+</tr><tr id="section-28">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-28">&#182;</a>
+  </div>
+  
+<p>Else if.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>    elif = <span class="s">"else if &#37;1(condition)\n\t"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-29">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-29">&#182;</a>
+  </div>
+  
+<p>Function.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>    fun = <span class="s">[[
+&#37;1(name) = (&#37;2(args)) -&gt;
+	&#37;0]]</span>,
+</pre></div>
+</td>
+</tr><tr id="section-30">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-30">&#182;</a>
+  </div>
+  
+<p>If ... else.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>    ife = <span class="s">[[
+if &#37;1(condition)
+	&#37;2
+else
+	&#37;0]]</span>,
+</pre></div>
+</td>
+</tr><tr id="section-31">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-31">&#182;</a>
+  </div>
+  
+<p>If.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>    [<span class="s">'if'</span>] = <span class="s">[[
+if &#37;1(condition)
+	&#37;0]]</span>,
+</pre></div>
+</td>
+</tr><tr id="section-32">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-32">&#182;</a>
+  </div>
+  
+<p>Interpolated code in double-quoted strings.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  [<span class="s">'#'</span>] = <span class="s">"#{ &#37;0 }"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-33">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-33">&#182;</a>
+  </div>
+  
+<p>Array comprehension.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  fora = <span class="s">"for &#37;1(name) in &#37;2(array)\n\t&#37;0"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-34">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-34">&#182;</a>
+  </div>
+  
+<p>Object comprehension.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  foro = <span class="s">"for &#37;1(key), &#37;2(value) of &#37;3(Object)\n\t&#37;0"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-35">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-35">&#182;</a>
+  </div>
+  
+<p>Range comprehension (exclusive).</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  forrex = <span class="s">"for &#37;1(name) in [&#37;2(start)...&#37;3(finish)]&#37;4( by &#37;5(step))\n\t&#37;0"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-36">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-36">&#182;</a>
+  </div>
+  
+<p>Range comprehension (inclusive).</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  forr = <span class="s">[[
+for &#37;1(name) in [&#37;2(start)..&#37;3(finish)]&#37;4( by &#37;5(step))
+	&#37;0]]</span>,
+</pre></div>
+</td>
+</tr><tr id="section-37">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-37">&#182;</a>
+  </div>
+  
+<p>Switch.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  swi = <span class="s">[[
+switch &#37;1(object)
+	when &#37;2(value)
+		&#37;0]]</span>,
+</pre></div>
+</td>
+</tr><tr id="section-38">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-38">&#182;</a>
+  </div>
+  
+<p>Ternary if.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  ifte = <span class="s">"if &#37;1(condition) then &#37;2(value) else &#37;0"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-39">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-39">&#182;</a>
+  </div>
+  
+<p>Try ... catch.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  try = <span class="s">[[
+try
+	&#37;1
+catch &#37;2(error)
+	&#37;0]]</span>,
+</pre></div>
+</td>
+</tr><tr id="section-40">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-40">&#182;</a>
+  </div>
+  
+<p>Unless.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  unl = <span class="s">"&#37;1(action) unless &#37;0"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-41">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-41">&#182;</a>
+  </div>
+  
+<p>Console.log.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  log = <span class="s">"console.log"</span>,
+  c = <span class="s">"console.log"</span>,
+</pre></div>
+</td>
+</tr><tr id="section-42">
+<td class="docs">
+  <div class="pilwrap">
+    <a class="pilcrow" href="#section-42">&#182;</a>
+  </div>
+  
+<p>Require.</p>
+
+
+</td>
+<td class="code">
+  <div class="highlight"><pre>  req = <span class="s">"require"</span>,
+  }
+<span class="k">end</span>
+</pre></div>
+</td>
+</tr></tbody>
+    </table>
+  </div>
+</body>
+</html>
