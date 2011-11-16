@@ -2,10 +2,9 @@
 ## Linux Installation
 
 - Download latest [textadept](http://code.google.com/p/textadept/downloads/list) and the latest modules pack
-- Extract linux tarball somewhere sensible, and the modules pack over it
+- Extract linux tarball somewhere sensible, and extract the modules pack on top of it
 - Link the executable
 - git clone this repository into /home/username/
-- Profit.
 
 ## Notes
 Relies on the following modules:
@@ -15,7 +14,7 @@ Relies on the following modules:
 
 The CoffeeScript module has been modified to fit with later versions of textadept. In particular:
 
-- extra keyboard shortcut taken out to insert snippets of js
+- extra keyboard shortcut taken out to insert snippets of js - was clashing with jump to
 - tweaked run command and added compile shortcuts (line numbers of compiled correspond to node stacktraces)
 
 
