@@ -7,6 +7,7 @@
 - git clone this repository into /home/username/
 - Profit.
 
+## Notes
 Relies on the following modules:
 
 - https://bitbucket.org/SirAlaran/ta-javascript/downloads
@@ -18,7 +19,7 @@ The CoffeeScript module has been modified to fit with later versions of textadep
 - tweaked run command and added compile shortcuts (line numbers of compiled correspond to node stacktraces)
 
 
-### Cool features
+## Cool features
 - `ctrl-r` will compile to js in a split-view
 - `ctrl-w` will subsequently close this temporary buffer, and unsplit views
 - `ctrl-shift-r` will run the .coffee file as a standalone module and demp the result in a split-view
