@@ -1,27 +1,5 @@
---![CoffeeScript](logo.png)
-
--- A `coffeescript` module for the
--- [Textadept](http://code.google.com/p/textadept/) editor.
--- It provides utilities for editing
--- [CoffeeScript](http://jashkenas.github.com/coffee-script/) code.<br>
--- It contains additional key commands, indentation support and
--- snippets, the latter based on Jeremy Ashkenas'
--- [Textmate bundle](https://github.com/jashkenas/coffee-script-tmbundle).
---
--- The source is on
--- [GitHub](https://github.com/rgieseke/ta-coffeescript),
--- released under the
--- [MIT license](http://www.opensource.org/licenses/mit-license.php).
---
--- ## Installation
--- Download a
--- [zipped](https://github.com/rgieseke/ta-coffeescript/zipball/master)
--- version and save the contained directory as `.textadept/modules/coffeescript`
--- or clone the git repository:
---     cd ~/.textadept/modules
---     git clone \
---       https://github.com/rgieseke/ta-coffeescript.git coffeescript
---
+-- Based on rgieseke's original CoffeeScript module
+-- Heavily edited by clux
 
 module('_m.coffeescript', package.seeall)
 
@@ -35,17 +13,19 @@ m_editing.comment_string.coffeescript = '# '
 m_run.run_command.coffee = 'coffee %(filename)'
 m_run.compile_command.coffee = 'coffee -pb %(filename)'
 
--- Check the syntax after saving a file using the `--lint` option of the
--- Coffeescript executable. This requires the jsl
--- ([JavaScript Lint](http://www.javascriptlint.com/)) command
--- to be installed.
-CHECK_SYNTAX = true
-
 -- Sets default buffer properties for CoffeeScript files. A default indent of
 -- 2 spaces is used.
 function set_buffer_properties()
   buffer.indent = 2
 end
+
+-- From here to snippets is generally unmodified - some bits removed only
+
+-- Check the syntax after saving a file using the `--lint` option of the
+-- Coffeescript executable. This requires the jsl
+-- ([JavaScript Lint](http://www.javascriptlint.com/)) command
+-- to be installed.
+CHECK_SYNTAX = true
 
 -- ## Commands.
 
@@ -81,9 +61,7 @@ events.connect(events.FILE_AFTER_SAVE,
   end)
 
 -- Control structures after which indentation should be increased. Loops can
--- be used as an expression, so the pattern need to start with a variable
--- name, see
--- [Loops and Comprehensions](http://jashkenas.github.com/coffee-script/#loops).
+-- be used as an expression, so the pattern need to start with a variable name.
 local control_structure_patterns = {
   '^%s*class',
   '^%s*%w*%s?=?%s?for',

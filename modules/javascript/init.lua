@@ -8,8 +8,8 @@ local m_editing, m_run = _m.textadept.editing, _m.textadept.run
 
 m_editing.comment_string.javascript = "//"
 -- Run command (uses file extension).
-m_run.run_command.javascript = 'node %(filename)'
-m_run.compile_command.javascript = 'jslint %(filename)'
+m_run.run_command.javascript = "node %(filename)"
+m_run.compile_command.javascript = "jslint %(filename)"
 
 -- Sets default buffer properties for JavaScript files. A default indent of
 -- 2 spaces is used.
@@ -54,7 +54,7 @@ end
 -- Snippets
 if type(_G.snippets) == "table" then
 	_G.snippets.javascript = {
-		-- Keys iteration.
+    -- Keys iteration.
     fork = [[
 Object.keys(%1(obj)).forEach(function(%2(e)){
   %0
@@ -82,11 +82,16 @@ for (var %1(i) = %2(0); %3(i) < %4(ary).length; %5(i) += %6(1)) {
 	var %7(val) = %8(ary)[%9(i)];
   %0
 }]],
-  -- Range for.
+    -- Range for.
     forr = [[
 for (var %1(i) = %2(0); %3(i) < %4(limit); %5(i) += %6(1)) {
   %0
 }]],
+    -- Console.log.
+    c = "console.log(%1(\"\"));",
+    -- Require.
+    r = "require('%1(module)')"
+
 	}
 end
 
