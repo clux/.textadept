@@ -3,7 +3,7 @@
 
 - Download latest [textadept](http://code.google.com/p/textadept/downloads/list) and the latest modules pack
 - Extract linux tarball somewhere sensible, and extract the modules pack on top of it
-- Link the executable
+- Link the executable (cd /usr/bin/ && ln -s ~/textadept_4.2/textadept)
 - git clone this repository into /home/username/
 
 ## Assumed Requirements
