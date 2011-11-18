@@ -69,29 +69,28 @@ Object.keys(%1(obj)).forEach(function(%2(e)){
 %1(array).filter(function(%2(e)){
   %0
 });]],
-    -- Object comprehension.
+    -- Object for.
     foro = [[
 for (var %1(key) in %2(obj)) {
-  %3(if (!Object.prototype.hasOwnProperty.call(%4(obj), %5(key))) continue;)
-  var %6(val) = %7(obj)[%8(key)];
+  %3(if (!Object.prototype.hasOwnProperty.call(%2, %1)) continue;)
+  var %4(val) = %2[%1%];
   %0
 }]],
     -- Array for.
     fora = [[
-for (var %1(i) = %2(0); %3(i) < %4(ary).length; %5(i) += %6(1)) {
-	var %7(val) = %8(ary)[%9(i)];
+for (var %1(i) = %2(0); %1 < %3(ary).length; %1 += %4(1)) {
+	var %5(val) = %3[%1%];
   %0
 }]],
     -- Range for.
     forr = [[
-for (var %1(i) = %2(0); %3(i) < %4(limit); %5(i) += %6(1)) {
+for (var %1(i) = %2(0); %1 < %3(limit); %1 += %4(1)) {
   %0
 }]],
     -- Console.log.
     c = "console.log(%1(\"\"));",
     -- Require.
-    r = "require('%1(module)')"
-
+    r = "require('%1(module)');",
 	}
 end
 
