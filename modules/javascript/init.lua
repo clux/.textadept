@@ -6,7 +6,7 @@ module("_m.javascript", package.seeall)
 
 local m_editing, m_run = _m.textadept.editing, _m.textadept.run
 
-m_editing.comment_string.javascript = "//"
+m_editing.comment_string.javascript = "// "
 -- Run command (uses file extension).
 m_run.run_command.js = 'node %(filename)'
 m_run.compile_command.js = 'jslint %(filename)'
