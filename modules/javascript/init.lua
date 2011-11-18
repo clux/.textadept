@@ -8,8 +8,8 @@ local m_editing, m_run = _m.textadept.editing, _m.textadept.run
 
 m_editing.comment_string.javascript = "//"
 -- Run command (uses file extension).
-m_run.run_command.javascript = "node %(filename)"
-m_run.compile_command.javascript = "jslint %(filename)"
+m_run.run_command.js = 'node %(filename)'
+m_run.compile_command.js = 'jslint %(filename)'
 
 -- Sets default buffer properties for JavaScript files. A default indent of
 -- 2 spaces is used.

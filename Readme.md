@@ -1,4 +1,4 @@
-# Textadept 4.2 Settings For JavaScript and Coffee-Script Usage
+# Textadept 4.2 Settings For JavaScript and CoffeeScript Usage
 ## Linux Installation
 
 - Download latest [textadept](http://code.google.com/p/textadept/downloads/list) and the latest modules pack
@@ -12,17 +12,16 @@ Based on the two modules:
 - https://bitbucket.org/SirAlaran/ta-javascript/downloads
 - https://github.com/rgieseke/ta-coffeescript
 
+But both have been heavily edited:
 
-- extra keyboard shortcut taken out to insert snippets of js - was clashing with jump to
-- tweaked run command and added compile shortcuts (line numbers of compiled correspond to node stacktraces)
-
+- Build and Run working properly with both languages
+- More/Better Snippets
 
 ## Build & Run
-Proper added to the two modules above.
-They all dump their result in an error buffer in split-view.
+Integrated build and run all dump their result in an error buffer in split-view.
 
 ### CoffeeScript
-- Build will compile to js
+- Build will compile to js (with -b to get matching stacktrace numbers from node)
 - Run will run the .coffee file with coffee as a standalone module
 
 ### JavaScript
