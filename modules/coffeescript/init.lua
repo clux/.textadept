@@ -42,9 +42,9 @@ m_run.compile_command.coffee = 'coffee -pb %(filename)'
 CHECK_SYNTAX = true
 
 -- Sets default buffer properties for CoffeeScript files. A default indent of
--- 4 spaces is used.
+-- 2 spaces is used.
 function set_buffer_properties()
-  buffer.indent = 4
+  buffer.indent = 2
 end
 
 -- ## Commands.
@@ -160,7 +160,7 @@ end
 if type(_G.snippets) == 'table' then
   _G.snippets.coffeescript = {
     -- Bound function.
-    bfun = "%1((%2(args)) )=>\n\t%0",
+    bf = "%1((%2(args)) )=>\n\t%0",
     -- Class.
     cla = [[
 class %1(ClassName)%2( extends %3(Ancestor))
@@ -168,52 +168,57 @@ class %1(ClassName)%2( extends %3(Ancestor))
 		%6(# body...))
 	%0]],
     -- Else if.
-    elif = "else if %1(condition)\n\t",
-    -- Function.
-    fun = [[
+    elif = "else if %1(cond)\n\t",
+    -- Function (Named).
+    fn = [[
 %1(name) = (%2(args)) ->
 	%0]],
+    -- Function (Anonymous).
+    f = "%1((%2(args)) )->\n\t%0",
     -- If ... else.
     ife = [[
-if %1(condition)
+if %1(cond)
 	%2
 else
 	%0]],
     -- If.
     ['if'] = [[
-if %1(condition)
+if %1(cond)
 	%0]],
-  -- Interpolated code in double-quoted strings.
-  ['#'] = "#{ %0 }",
+  -- Keys iteration.
+  fork = "Object.keys(%1(obj)).forEach ",
+  -- Each iteration.
+  fore = "%1(array).forEach ",
+  -- Filter array.
+  filt = "%1(array).filter ",
   -- Array comprehension.
   fora = "for %1(name) in %2(array)\n\t%0",
   -- Object comprehension.
-  foro = "for %1(key), %2(value) of %3(Object)\n\t%0",
-  -- Range comprehension (exclusive).
-  forrex = "for %1(name) in [%2(start)...%3(finish)]%4( by %5(step))\n\t%0",
-  -- Range comprehension (inclusive).
+  foro = "for %1(key),%2(val) of %3(obj)\n\t%0",
+  -- Range comprehension (excludes end).
   forr = [[
-for %1(name) in [%2(start)..%3(finish)]%4( by %5(step))
+for %1(name) in [%2(0)...%3(len)]%4( by %5(step))
 	%0]],
   -- Switch.
-  swi = [[
-switch %1(object)
-	when %2(value)
+  sw = [[
+switch %1(val)
+	when %2(cond)
 		%0]],
   -- Ternary if.
-  ifte = "if %1(condition) then %2(value) else %0",
+  ['?'] = "if %1(cond) then %2(val) else %0",
+  -- Throw new Error.
+  t = "throw new Error(\"%0\")",
   -- Try ... catch.
-  try = [[
+  tc = [[
 try
 	%1
-catch %2(error)
+catch %2(e)
 	%0]],
   -- Unless.
-  unl = "%1(action) unless %0",
+  u = "%1(action) unless %0",
   -- Console.log.
-  log = "console.log",
   c = "console.log",
   -- Require.
-  req = "require",
+  r = "require('%1(name)')",
   }
 end

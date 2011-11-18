@@ -1,5 +1,6 @@
 require 'textadept'
 
+
 keys.cw = { function()
   if buffer._type then
     buffer:close()
