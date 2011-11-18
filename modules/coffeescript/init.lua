@@ -164,13 +164,23 @@ else
 if %1(cond)
 	%0]],
   -- Keys iteration.
-  fork = "Object.keys(%1(obj)).forEach ",
+  fork = [[
+Object.keys(%1(obj)).forEach (%2(key)) ->
+  %3(val) = %1[%2%]
+  %0
+]],
   -- Each iteration.
-  fore = "%1(array).forEach ",
+  fore = [[
+%1(array).forEach (%2(e)) ->
+  %0
+]],
   -- Filter array.
-  filt = "%1(array).filter ",
+  filt = [[
+%1(array).filter (%2(e)) ->
+  %0
+]],
   -- Array comprehension.
-  fora = "for %1(name) in %2(array)\n\t%0",
+  fora = "for %1(name) in %2(list)\n\t%0",
   -- Object comprehension.
   foro = "for %1(key),%2(val) of %3(obj)\n\t%0",
   -- Range comprehension (excludes end).
@@ -195,7 +205,7 @@ catch %2(e)
   -- Unless.
   u = "%1(action) unless %0",
   -- Console.log.
-  c = "console.log",
+  c = "console.log %0",
   -- Require.
   r = "require('%1(name)')",
   }

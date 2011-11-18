@@ -57,6 +57,7 @@ if type(_G.snippets) == "table" then
     -- Keys iteration.
     fork = [[
 Object.keys(%1(obj)).forEach(function(%2(e)){
+  var val = %1[%2%];
   %0
 });]],
     -- Each iteration.
