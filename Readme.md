@@ -6,6 +6,11 @@
 - Link the executable
 - git clone this repository into /home/username/
 
+## Assumed Requirements
+- NodeJS
+- CoffeeScript (globally installed)
+- [node-jslint](https://github.com/reid/node-jslint) (globally installed)
+
 ## Notes
 Based on the two modules:
 
