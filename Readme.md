@@ -9,7 +9,7 @@
 ## Assumed Requirements
 - NodeJS
 - CoffeeScript (globally installed)
-- [node-jslint](https://github.com/reid/node-jslint) (globally installed)
+- JSHint (npm install -g jshint)
 
 ## Notes
 Based on the two modules:
@@ -30,7 +30,7 @@ Integrated build and run all dump their result in an error buffer in split-view.
 - Run will run the .coffee file with coffee as a standalone module
 
 ### JavaScript
-- Build will run the file with node-jslint
+- Build will run the file with node-jshint
 - Run will run the .js file with node as a standalone module
 
 
