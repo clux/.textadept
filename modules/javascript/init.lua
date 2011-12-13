@@ -57,18 +57,23 @@ if type(_G.snippets) == "table" then
 	_G.snippets.javascript = {
     -- Keys iteration.
     fork = [[
-Object.keys(%1(obj)).forEach(function(%2(e)){
+Object.keys(%1(obj)).forEach(function (%2(e)) {
   var val = %1[%2%];
   %0
 });]],
     -- Each iteration.
     fore = [[
-%1(array).forEach(function(%2(e)){
+forEach(function (%1(e)) {
   %0
 });]],
     -- Filter array.
     filt = [[
-%1(array).filter(function(%2(e)){
+filter(function (%1(e)) {
+  %0
+});]],
+    -- Map array.
+    map = [[
+map(function (%1(e)) {
   %0
 });]],
     -- Object for.
@@ -89,6 +94,22 @@ for (var %1(i) = %2(0); %1 < %3(ary).length; %1 += %4(1)) {
 for (var %1(i) = %2(0); %1 < %3(limit); %1 += %4(1)) {
   %0
 }]],
+    -- Splats.
+    ["..."] = " = (arguments.length > %1(0)) ? %2(Array.prototype.)slice.call(arguments, %1) : [];\n%0",
+    -- If.
+    ["if"] = [[
+if (%1(cond)) {
+  %0
+}
+]],
+    -- Else.
+    el = [[
+else {
+  %0
+}
+]],
+    -- Throw
+    t = "throw new Error('%0');",
     -- Console.log.
     c = "console.log(%1(\"\"));",
     -- Require.
